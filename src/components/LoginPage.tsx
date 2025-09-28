@@ -28,7 +28,7 @@ export function LoginPage({ onLogin }: Props) {
       <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
         <div className="flex items-center justify-center gap-3 mb-8">
           <FileText className="w-10 h-10 text-blue-600" />
-          <h1 className="text-3xl font-bold text-gray-800">MedReport AI</h1>
+          <h1 className="text-3xl font-bold text-gray-800">DocuBridge.ai</h1>
         </div>
 
         <h2 className="text-xl font-semibold text-gray-700 mb-6 text-center">

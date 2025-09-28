@@ -17,6 +17,18 @@ export function ReportApproval({ suggestions, onFinalize, originalImage }: Props
   const [feedback, setFeedback] = useState<Record<string, string>>({});
   const [regenerating, setRegenerating] = useState<string | null>(null);
 
+  // Headers to exclude from display
+  const excludedHeaders = ['current medications', 'plan'];
+
+  // Filter out excluded sections
+  const getFilteredSections = (sections: ReportSection[]) => {
+    return sections.filter(section => 
+      !excludedHeaders.some(excluded => 
+        section.header.toLowerCase().includes(excluded.toLowerCase())
+      )
+    );
+  };
+
   const handleApprove = (header: string) => {
     setApprovals(prev => ({ ...prev, [header]: true }));
   };
@@ -60,6 +72,9 @@ export function ReportApproval({ suggestions, onFinalize, originalImage }: Props
     }
   };
 
+  // Get filtered sections for the selected report
+  const filteredSections = getFilteredSections(selectedReport.sections);
+
   return (
     <div className="flex gap-6 w-full max-w-7xl mx-auto">
       {/* Left: Original EMR Image */}
@@ -98,7 +113,7 @@ export function ReportApproval({ suggestions, onFinalize, originalImage }: Props
         </div>
 
         {/* Cedar Diff UI - Section Review */}
-        {selectedReport.sections.map((section: ReportSection, idx: number) => (
+        {filteredSections.map((section: ReportSection, idx: number) => (
           <div
             key={idx}
             className={`
@@ -200,8 +215,8 @@ export function ReportApproval({ suggestions, onFinalize, originalImage }: Props
         {/* Finalize Button */}
         <button
           onClick={() => {
-            // Check if all sections have been reviewed
-            const unreviewedSections = selectedReport.sections.filter(
+            // Check if all visible sections have been reviewed
+            const unreviewedSections = filteredSections.filter(
               (section: ReportSection) => approvals[section.header] === undefined
             );
 
@@ -210,9 +225,13 @@ export function ReportApproval({ suggestions, onFinalize, originalImage }: Props
               return;
             }
 
-            // Check if at least one section is approved
-            const hasApprovedSections = Object.values(approvals).some(val => val === true);
-            if (!hasApprovedSections) {
+            // Check if at least one visible section is approved
+            const visibleSectionHeaders = filteredSections.map(s => s.header);
+            const hasApprovedVisibleSections = visibleSectionHeaders.some(
+              header => approvals[header] === true
+            );
+            
+            if (!hasApprovedVisibleSections) {
               alert('You must approve at least one section to finalize the report.');
               return;
             }

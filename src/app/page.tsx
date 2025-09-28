@@ -114,7 +114,7 @@ export default function Home() {
       <header className="bg-white border-b shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center gap-3">
           <FileText className="w-8 h-8 text-blue-600" />
-          <h1 className="text-2xl font-bold text-gray-800">MedReport AI</h1>
+          <h1 className="text-2xl font-bold text-gray-800">DocBridge.ai</h1>
           <span className="ml-auto text-sm text-gray-500">
             Cedar × Mastra
           </span>

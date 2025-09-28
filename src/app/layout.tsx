@@ -6,7 +6,7 @@ import { CedarProvider } from '@/components/CedarProvider';
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "MedReport AI",
+  title: "DocuBridge.ai",
   description: "AI-powered medical report generation",
 };
 
