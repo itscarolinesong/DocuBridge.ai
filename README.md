@@ -1,25 +1,9 @@
 <<<<<<< HEAD
 # DocuBridge.ai
 
-[Brief tagline - what it does in one sentence]
+## 🎯 Built for HackGT 12 
+This is our code for DocuBridge.ai!
 
-## 🎯 Built for HackGT 12 - Impiricus Challenge
-
-## Quick Start (< 5 minutes)
-[Step-by-step instructions]
-
-## Demo Video/Screenshots
-[Visual proof it works]
-
-## What It Does
-[Clear explanation]
-
-## Tech Stack
-[Technologies used]
-
-## Try It Yourself
-[Installation instructions]
-=======
 # Cedar-OS + Mastra Starter Template
 
 A blank starter template combining [Cedar-OS](https://cedar.ai) for the frontend AI interface and [Mastra](https://mastra.ai) for the backend agent orchestration.
