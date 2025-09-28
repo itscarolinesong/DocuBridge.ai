@@ -29,16 +29,14 @@ export function OCRUploader({ onComplete }: Props) {
       
       setProgress('Complete!');
       
-      // Convert file to base64 data URL instead of blob URL
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const imageDataUrl = reader.result as string;
-        setTimeout(() => onComplete(emrData, imageDataUrl), 500);
-      };
-      reader.readAsDataURL(file);
+      // Create image URL to display later
+      const imageDataUrl = URL.createObjectURL(file);
+      
+      setTimeout(() => onComplete(emrData, imageDataUrl), 500);
     } catch (error) {
       console.error('OCR Error:', error);
       setProgress('Error processing document');
+    } finally {
       setTimeout(() => setIsProcessing(false), 1000);
     }
   };
