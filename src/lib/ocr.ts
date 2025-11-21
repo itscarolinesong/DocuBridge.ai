@@ -33,7 +33,6 @@ interface GlobalOCRData {
 
 // Extend globalThis to include our OCR data
 declare global {
-  // eslint-disable-next-line no-var
   var __ocrData: GlobalOCRData | undefined;
 }
 
