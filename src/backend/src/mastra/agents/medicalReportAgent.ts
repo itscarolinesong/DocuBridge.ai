@@ -1,4 +1,3 @@
-import { openai } from '@ai-sdk/openai';
 import { Agent } from '@mastra/core/agent';
 
 /**
@@ -61,10 +60,10 @@ Always structure reports with these sections using ## markdown headers:
 </response_guidelines>
   `,
   model: {
-  provider: 'ollama',
+  provider: 'ollama' as const,
   name: 'llama3.2:3b',
   baseURL: 'http://localhost:11434',
-} as any,
+},
 
   tools: {},
 });

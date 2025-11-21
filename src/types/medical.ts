@@ -19,3 +19,9 @@ export interface ReportSuggestion {
   title: string;
   sections: ReportSection[];
 }
+
+export interface FinalizedReport {
+  sections: ReportSection[];
+  approvals: Record<string, boolean>;
+  modifications: Record<string, string>;
+}
