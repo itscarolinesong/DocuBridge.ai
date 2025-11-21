@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { LoginPage } from '@/components/LoginPage';
 import { OCRUploader } from '@/components/OCRUploader';
 import { ReportApproval } from '@/components/ReportApproval';
-import { EMRData } from '@/types/medical';
+import { EMRData, ReportSection, FinalizedReport, ReportSuggestion } from '@/types/medical';
 import { FileText, ArrowRight, CheckCircle } from 'lucide-react';
 import jsPDF from 'jspdf';
 
@@ -12,9 +12,9 @@ export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [emrData, setEMRData] = useState<EMRData | null>(null);
-  const [reportSuggestions, setReportSuggestions] = useState<any[]>([]);
+  const [reportSuggestions, setReportSuggestions] = useState<ReportSuggestion[]>([]);
   const [loading, setLoading] = useState(false);
-  const [finalizedReport, setFinalizedReport] = useState<any>(null);
+  const [finalizedReport, setFinalizedReport] = useState<FinalizedReport | null>(null);
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 
 
@@ -56,7 +56,7 @@ export default function Home() {
     }
   };
 
-  const handleFinalize = (report: any) => {
+  const handleFinalize = (report: FinalizedReport) => {
     console.log('Final Report:', report);
     setFinalizedReport(report);
     setStep(3);
@@ -75,7 +75,7 @@ export default function Home() {
     yPosition += 15;
 
     // Only include approved sections
-    finalizedReport.sections.forEach((section: any) => {
+    finalizedReport.sections.forEach((section: ReportSection) => {
       // Skip rejected sections
       if (finalizedReport.approvals[section.header] === false) return;
       
@@ -193,7 +193,13 @@ export default function Home() {
   );
 }
 
-function StepIndicator({ number, label, active }: any) {
+interface StepIndicatorProps {
+  number: number;
+  label: string;
+  active: boolean;
+}
+
+function StepIndicator({ number, label, active }: StepIndicatorProps) {
   return (
     <div className={`flex items-center gap-2 ${active ? 'text-blue-600' : 'text-gray-400'}`}>
       <div className={`

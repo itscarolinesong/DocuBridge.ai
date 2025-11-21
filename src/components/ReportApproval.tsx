@@ -2,11 +2,11 @@
 
 import React, { useState } from 'react';
 import { Check, X, Edit3, Download, Loader2 } from 'lucide-react';
-import { ReportSection } from '@/types/medical';
+import { ReportSection, FinalizedReport, ReportSuggestion } from '@/types/medical';
 
 interface Props {
-  suggestions: any[];
-  onFinalize: (report: any) => void;
+  suggestions: ReportSuggestion[];
+  onFinalize: (report: FinalizedReport) => void;
   originalImage: string | null;
 }
 
@@ -45,7 +45,7 @@ export function ReportApproval({ suggestions, onFinalize, originalImage }: Props
     setRegenerating(sectionHeader);
     
     try {
-      const currentSection = selectedReport.sections.find((s: any) => s.header === sectionHeader);
+      const currentSection = selectedReport.sections.find((s: ReportSection) => s.header === sectionHeader);
       const response = await fetch('http://localhost:4111/regenerate-section', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -221,7 +221,7 @@ export function ReportApproval({ suggestions, onFinalize, originalImage }: Props
             );
 
             if (unreviewedSections.length > 0) {
-              alert(`Please review all sections before finalizing. Unreviewed sections:\n${unreviewedSections.map((s: any) => `- ${s.header}`).join('\n')}`);
+              alert(`Please review all sections before finalizing. Unreviewed sections:\n${unreviewedSections.map((s: ReportSection) => `- ${s.header}`).join('\n')}`);
               return;
             }
 

@@ -1,4 +1,4 @@
-import Tesseract, { Page, Word, Line } from 'tesseract.js';
+import Tesseract, { Word } from 'tesseract.js';
 import { EMRData } from '@/types/medical';
 
 // Extended types for OCR data
@@ -15,11 +15,26 @@ interface EnhancedWord extends Word {
   text: string;
 }
 
-interface EnhancedLine extends Line {
+interface EnhancedLine {
   bbox: BoundingBox;
   confidence: number;
   text: string;
   words: EnhancedWord[];
+}
+
+// Type for global OCR data storage
+interface GlobalOCRData {
+  text: string;
+  confidence: number;
+  lines: EnhancedLine[];
+  words: EnhancedWord[];
+  blocks: unknown[];
+}
+
+// Extend globalThis to include our OCR data
+declare global {
+  // eslint-disable-next-line no-var
+  var __ocrData: GlobalOCRData | undefined;
 }
 
 // Image preprocessing functions
@@ -45,7 +60,7 @@ async function preprocessImage(file: File): Promise<File> {
           ctx.drawImage(img, 0, 0);
 
           // Get image data
-          let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
           const data = imageData.data;
 
           // Step 1: Convert to grayscale
@@ -258,7 +273,7 @@ function extractFieldWithSpatialAwareness(
   pattern: RegExp,
   minConfidence: number = 60
 ): string | null {
-  const ocrData = (globalThis as any).__ocrData;
+  const ocrData = globalThis.__ocrData;
 
   if (!ocrData || !ocrData.words || !ocrData.lines) {
     console.log('No spatial OCR data available, falling back to text-based extraction');
@@ -516,7 +531,7 @@ export async function extractTextFromImage(file: File): Promise<string> {
     console.log(`OCR complete. Confidence: ${result.data.confidence}%`);
 
     // Store the enhanced data for spatial-aware extraction
-    (globalThis as any).__ocrData = {
+    globalThis.__ocrData = {
       text: result.data.text,
       confidence: result.data.confidence,
       lines: result.data.lines,
@@ -615,7 +630,7 @@ export function parseEMRText(rawText: string): EMRData {
   console.log('Diagnosis:', diagnosis);
 
   // Get overall OCR confidence if available
-  const ocrData = (globalThis as any).__ocrData;
+  const ocrData = globalThis.__ocrData;
   if (ocrData && ocrData.confidence) {
     console.log('Overall OCR Confidence:', ocrData.confidence.toFixed(2) + '%');
   }
